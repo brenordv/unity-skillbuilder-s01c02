@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -5,10 +6,21 @@ public class ScoreManager : MonoBehaviour
 {
     public Text scoreText;
     public int score = 100;
+    public int perfectScore;
     public int spawnBlockCost = 10;
     public int coinPickupValue = 10;
     public Color negativeScoreColor = Color.red;
     public Color positiveScoreColor = Color.black;
+   
+    public bool IsPerfectScore => score == perfectScore;
+    
+    private void Start()
+    {
+        var totalScoreByPickingUpCoins = FindObjectsOfType<Coin>().Length * coinPickupValue;
+        perfectScore = score + totalScoreByPickingUpCoins;
+        UpdateUiScoreText();
+    }
+
 
     public void BlockSpawned()
     {
