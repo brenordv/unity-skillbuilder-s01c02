@@ -3,6 +3,7 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class GameHandler : MonoBehaviour
@@ -36,6 +37,15 @@ public class GameHandler : MonoBehaviour
         allPlayerBlocks = FindObjectsOfType<BlockMovement>();
     }
 
+    public void UpdatePlayerBlocksAndActivate()
+    {
+        AllPlayerBlocksArrayUpdate();
+        if (allPlayerBlocks.Any(block => block.GetComponent<BlockMovement>().isActiveBool))
+            return;
+        allPlayerBlocks.Last().GetComponent<BlockMovement>().isActiveBool = true;
+
+    }
+    
     public void DestroyedBlockUpdate()
     {
         ActiveBlockPlusOne();
@@ -65,6 +75,8 @@ public class GameHandler : MonoBehaviour
                 }
             }
         }
+        
+        
     }
 
     private void ActiveBlockMinusOne()

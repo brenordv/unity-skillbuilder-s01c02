@@ -1,33 +1,38 @@
 ﻿// GameDev.tv ChallengeClub.Got questionsor wantto shareyour niftysolution?
 // Head over to - http://community.gamedev.tv
 
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 
 public class Hazard : MonoBehaviour
 {
-    private GameHandler gameHandler;
+    private GameHandler _gameHandler;
+    private ColorChanger _colorChanger;
 
-    void Start()
+    private void Start()
     {
-        gameHandler = FindObjectOfType<GameHandler>();
+        _gameHandler = FindObjectOfType<GameHandler>();
+        _colorChanger = GetComponent<ColorChanger>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.gameObject.CompareTag("Block"))
+        if (!collision.gameObject.CompareTag("Block")) return;
+
+        var blockColorChanger = collision.gameObject.GetComponent<ColorChanger>();
+
+        if (blockColorChanger == null)
+            throw new ApplicationException(
+                $"Blocks should have a ColorChanger component. (Obj name: '{collision.gameObject.name}')");
+
+        if (blockColorChanger.spriteColor == _colorChanger.spriteColor) return;
+
+        if (collision.gameObject.GetComponent<BlockMovement>().isActiveBool)
         {
-            if (collision.gameObject.GetComponent<BlockMovement>().isActiveBool)
-            {
-                Destroy(collision.gameObject);
-                gameHandler.AllPlayerBlocksArrayUpdate();
-                gameHandler.DestroyedBlockUpdate();
-            }
-            else
-            {
-                Destroy(collision.gameObject);
-            }
+            _gameHandler.AllPlayerBlocksArrayUpdate();
+            _gameHandler.DestroyedBlockUpdate();
         }
+
+        Destroy(collision.gameObject);
     }
 }

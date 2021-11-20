@@ -97,10 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e055227fdd4bb94f90f4aa67ceaeff7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  myColor: {r: 0, g: 0, b: 0, a: 0}
-  isRed: 0
-  isYellow: 0
-  isBlue: 0
+  spriteColor: 0
+  randomColor: 1
 --- !u!61 &1744052872
 BoxCollider2D:
   m_ObjectHideFlags: 0
